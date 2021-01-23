@@ -1,0 +1,24 @@
+[
+	{
+		"id":1,
+		"food_name":"Steamed Chicken Rice",
+		"when_eaten":"23/1/2021",
+		"calories": 600,
+		"meal":"lunch"
+	},
+	{
+		"id":2,
+		"food_name":"Sushi",
+		"when_eaten":"23/1/2021",
+		"calories": 400,
+		"meal":"dinner"
+	},
+		{
+		"id":3,
+		"food_name":"Mala Hotpot",
+		"when_eaten":"24/1/2021",
+		"calories": 800,
+		"meal":"lunch"
+	}
+
+]
