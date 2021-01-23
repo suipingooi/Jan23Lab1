@@ -3,6 +3,23 @@
 {% block content %}
 
 <h1>Welcome to TGC10 Food Tracker</h1>
-{{food}}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Meal Type</th>
+            <th>Food Name</th>
+            <th>Calories</th>
+        </tr>
+    </thead>
+    {% for items in food %}
+    <tr>
+        <td>{{items.when_eaten}}</td>
+        <td>{{items.meal}}</td>
+        <td>{{items.food_name}}</td>
+        <td>{{items.calories}}</td>
+    </tr>
+    {% endfor %}
+</table>
 
 {% endblock %}
