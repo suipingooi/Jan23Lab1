@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import json
 import os
 import random
@@ -8,6 +8,14 @@ database = {}
 with open('food.json') as filepointer:
     database = json.load(filepointer)
 print(database)
+
+
+def find_food_by_id(food_id):
+    wanted_food_record = None
+    for food_record in database:
+        if food_record["id"] == food_id:
+            wanted_food_record = food_record
+    return wanted_food_record
 
 
 @app.route('/')
@@ -36,12 +44,32 @@ def process_log_food():
     new_food['food_name'] = food_name
     new_food['calories'] = calories
 
+# add to database
     database.append(new_food)
 
+# save into JSON file
     with open('food.json', 'w') as filepointer:
         json.dump(database, filepointer)
 
     return redirect(url_for('home'))
+
+
+@app.route('/<int:food_id>/update')
+def show_update_food(food_id):
+    wanted_food_record = find_food_by_id(food_id)
+
+    return render_template('update_food.template.html',
+                           food=wanted_food_record)
+
+
+@app.route('/<int:food_id>/update', methods=["POST"])
+def process_update_food(food_id):
+    existing_food_record = find_food_by_id(food_id)
+    existing_food_record['food_name'] = request.form.get('food_name')
+    existing_food_record['when_eaten'] = request.form.get('when_eaten')
+    existing_food_record['meal'] = request.form.get('meal')
+    existing_food_record['calories'] = request.form.get('calories')
+    return redirect(url_for('/'))
 
 
 # "magic code" -- boilerplate
