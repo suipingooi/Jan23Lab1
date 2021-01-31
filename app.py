@@ -7,7 +7,8 @@ app = Flask(__name__)
 database = {}
 with open('food.json') as filepointer:
     database = json.load(filepointer)
-print(database)
+
+# enable sessions in flask
 
 
 def find_food_by_id(food_id):
@@ -15,7 +16,16 @@ def find_food_by_id(food_id):
     for food_record in database:
         if food_record["id"] == food_id:
             wanted_food_record = food_record
+            break
+
     return wanted_food_record
+
+
+def save_to_json():
+    with open('food.json', 'w') as filepointer:
+        json.dump(database, filepointer)
+
+    return redirect(url_for('home'))
 
 
 @app.route('/')
@@ -31,31 +41,23 @@ def show_log_food():
 
 @app.route('/log', methods=["POST"])
 def process_log_food():
-    food_id = random.randint(1, 10000) + 5
-    when_eaten = request.form.get('date')
-    meal = request.form.get('meal')
-    food_name = request.form.get('food_name')
-    calories = request.form.get('calories')
-
     new_food = {}
-    new_food['id'] = food_id
-    new_food['when_eaten'] = when_eaten
-    new_food['meal'] = meal
-    new_food['food_name'] = food_name
-    new_food['calories'] = calories
+    new_food['id'] = random.randint(1, 10000) + 5
+    new_food['when_eaten'] = request.form.get('date')
+    new_food['meal'] = request.form.get('meal')
+    new_food['food_name'] = request.form.get('food_name')
+    new_food['calories'] = request.form.get('calories')
 
 # add to database
     database.append(new_food)
 
 # save into JSON file
-    with open('food.json', 'w') as filepointer:
-        json.dump(database, filepointer)
-
-    return redirect(url_for('home'))
+    save_to_json()
 
 
 @app.route('/<int:food_id>/update')
 def show_update_food(food_id):
+    # linear search to find record to edit
     wanted_food_record = find_food_by_id(food_id)
 
     return render_template('update_food.template.html',
@@ -66,10 +68,13 @@ def show_update_food(food_id):
 def process_update_food(food_id):
     existing_food_record = find_food_by_id(food_id)
     existing_food_record['food_name'] = request.form.get('food_name')
-    existing_food_record['when_eaten'] = request.form.get('when_eaten')
+    existing_food_record['when_eaten'] = request.form.get('date')
     existing_food_record['meal'] = request.form.get('meal')
     existing_food_record['calories'] = request.form.get('calories')
-    return redirect(url_for('/'))
+
+    save_to_json()
+
+    return redirect(url_for('home'))
 
 
 # "magic code" -- boilerplate

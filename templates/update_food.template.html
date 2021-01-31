@@ -1,0 +1,41 @@
+{% extends 'base.template.html' %}
+
+{% block content %}
+<h1>Editing log record for {{food.food_name}}</h1>
+<form method="POST">
+    <div>
+        <label class="form-label">Date</label>
+        <input type="text" class="form-control" name="date" value="{{food.when_eaten}}" />
+    </div>
+    <div>
+        <label class="form-label">Meal Type</label>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="meal" id="breakfast" value="breakfast"
+                {% if food.meal == "breakfast" %} checked {% endif %}>
+            <label class="form-check-label" for="breakfast">breakfast</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="meal" id="lunch" value="lunch"
+                {% if food.meal == "lunch" %} checked {% endif %}>
+            <label class="form-check-label" for="lunch">lunch</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="meal" id="dinner" value="dinner"
+                {% if food.meal == "dinner" %} checked {% endif %}>
+            <label class="form-check-label" for="dinner">dinner</label>
+        </div>
+    </div>
+    <div>
+        <label class="form-label">Food Name</label>
+        <input type="text" class="form-control" name="food_name" value="{{food.food_name}}" />
+    </div>
+    <div>
+        <label class="form-label">Calories</label>
+        <input type="text" class="form-control" name="calories" value="{{food.calories}}" />
+    </div>
+    <input type="submit" value="Update" />
+</form>
+
+
+
+{% endblock %}

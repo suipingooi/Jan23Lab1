@@ -18,6 +18,10 @@
         <td>{{items.meal}}</td>
         <td>{{items.food_name}}</td>
         <td>{{items.calories}}</td>
+        <td>
+            <a class ="btn btn-primary" href="{{ url_for('show_update_food', food_id=food.id) }}">Update</a>
+            <a class ="btn btn-danger" href="#">Delete</a>
+        </td>
     </tr>
     {% endfor %}
 </table>
